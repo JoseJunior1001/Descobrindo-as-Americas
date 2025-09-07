@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz América do Sul | América Quiz</title>
+    <meta name="description" content="Teste seus conhecimentos sobre os países da América do Sul. Perguntas sobre geografia, cultura e curiosidades.">
+    <style>
+        :root {
+            --azul-escuro: #0a2463;
+            --azul-medio: #1565c0;
+            --azul-claro: #2196f3;
+            --azul-bem-claro: #e3f2fd;
+            --branco: #ffffff;
+            --preto: #212121;
+            --cinza: #757575;
+            --cinza-claro: #f5f5f5;
+            --verde: #4caf50;
+            --vermelho: #f44336;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--branco);
+            color: var(--preto);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--azul-medio) 100%);
+            color: var(--branco);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: var(--azul-bem-claro);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+        
+        .nav-links a {
+            color: var(--branco);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--azul-bem-claro);
+        }
+        
+        /* Hero Section */
+        .hero-quiz {
+            background: linear-gradient(rgba(10, 36, 99, 0.8), rgba(10, 36, 99, 0.8)), url('https://placehold.co/1200x600/0a2463/ffffff?text=América+do+Sul');
+            background-size: cover;
+            background-position: center;
+            color: var(--branco);
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .hero-quiz h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero-quiz p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Progresso do Quiz */
+        .quiz-progress {
+            background-color: var(--azul-bem-claro);
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .progress-bar {
+            flex-grow: 1;
+            height: 10px;
+            background-color: var(--cinza-claro);
+            border-radius: 5px;
+            margin: 0 1rem;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--verde);
+            width: 20%; /* Isso será ajustado via JavaScript */
+            transition: width 0.3s;
+        }
+        
+        .progress-text {
+            font-weight: 600;
+            color: var(--azul-escuro);
+            white-space: nowrap;
+        }
+        
+        /* Área do Quiz */
+        .quiz-area {
+            padding: 2rem 0 4rem;
+        }
+        
+        .question-card {
+            background-color: var(--branco);
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .question-number {
+            color: var(--azul-medio);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .question-text {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            color: var(--azul-escuro);
+        }
+        
+        .options-container {
+            display: grid;
+            gap: 1rem;
+        }
+        
+        .option {
+            background-color: var(--azul-bem-claro);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .option:hover {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+        }
+        
+        .option.selected {
+            background-color: var(--azul-medio);
+            color: var(--branco);
+            border-color: var(--azul-escuro);
+        }
+        
+        .option.correct {
+            background-color: var(--verde);
+            color: var(--branco);
+        }
+        
+        .option.incorrect {
+            background-color: var(--vermelho);
+            color: var(--branco);
+        }
+        
+        .option-letter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background-color: var(--azul-claro);
+            color: var(--branco);
+            border-radius: 50%;
+            margin-right: 1rem;
+            font-weight: bold;
+        }
+        
+        .option.selected .option-letter,
+        .option.correct .option-letter,
+        .option.incorrect .option-letter {
+            background-color: var(--branco);
+            color: var(--azul-escuro);
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--azul-claro);
+            color: var(--branco);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: var(--azul-medio);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--azul-claro);
+            color: var(--azul-claro);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+        }
+        
+        .btn-disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .btn-disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Modal de Resultados */
+        .results-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: var(--branco);
+            border-radius: 15px;
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal-content h2 {
+            color: var(--azul-escuro);
+            margin-bottom: 1.5rem;
+        }
+        
+        .score-display {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--azul-medio);
+            margin: 1.5rem 0;
+        }
+        
+        .score-text {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 3rem 0 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1.2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .footer-section h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--azul-claro);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: var(--azul-bem-claro);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--branco);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero-quiz h1 {
+                font-size: 2rem;
+            }
+            
+            .question-text {
+                font-size: 1.2rem;
+            }
+            
+            .progress-container {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .progress-bar {
+                width: 100%;
+                margin: 0.5rem 0;
+            }
+            
+            .navigation-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">América<span>Quiz</span></a>
+                <ul class="nav-links">
+                    <li><a href="index.html#sobre">Sobre</a></li>
+                    <li><a href="index.html#quiz">Quizzes</a></li>
+                    <li><a href="index.html#ranking">Ranking</a></li>
+                    <li><a href="index.html#turma">Nossa Turma</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-quiz">
+        <div class="container">
+            <h1>América do Sul</h1>
+            <p>Teste seus conhecimentos sobre os países, capitais e curiosidades da América do Sul.</p>
+        </div>
+    </section>
+
+    <!-- Progresso do Quiz -->
+    <section class="quiz-progress">
+        <div class="container">
+            <div class="progress-container">
+                <div class="progress-text">Pergunta 1 de 5</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 20%"></div>
+                </div>
+                <div class="progress-text">Pontuação: 0</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Área do Quiz -->
+    <section class="quiz-area">
+        <div class="container">
+            <div class="question-card">
+                <div class="question-number">Pergunta 1</div>
+                <h2 class="question-text">Qual é o maior país da América do Sul em área territorial?</h2>
+                
+                <div class="options-container">
+                    <div class="option" data-option="1">
+                        <span class="option-letter">A</span>
+                        <span class="option-text">Argentina</span>
+                    </div>
+                    <div class="option" data-option="2">
+                        <span class="option-letter">B</span>
+                        <span class="option-text">Brasil</span>
+                    </div>
+                    <div class="option" data-option="3">
+                        <span class="option-letter">C</span>
+                        <span class="option-text">Peru</span>
+                    </div>
+                    <div class="option" data-option="4">
+                        <span class="option-letter">D</span>
+                        <span class="option-text">Colômbia</span>
+                    </div>
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button class="btn btn-outline" id="prev-btn" disabled>Anterior</button>
+                    <button class="btn" id="next-btn">Próxima</button>
+                    <button class="btn" id="submit-btn" style="display: none;">Finalizar Quiz</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de Resultados -->
+    <div class="results-modal" id="results-modal">
+        <div class="modal-content">
+            <h2>Quiz Finalizado!</h2>
+            <p>Sua pontuação:</p>
+            <div class="score-display">3/5</div>
+            <p class="score-text">Parabéns! Você demonstrou bons conhecimentos sobre a América do Sul.</p>
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <a href="index.html#quiz" class="btn btn-outline">Voltar aos Quizzes</a>
+                <button class="btn" id="restart-btn">Tentar Novamente</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>América Quiz</h3>
+                    <p>Um projeto educacional para testar e expandir conhecimentos sobre o continente americano.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Links Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html#sobre">Sobre</a></li>
+                        <li><a href="index.html#quiz">Quizzes</a></li>
+                        <li><a href="index.html#ranking">Ranking</a></li>
+                        <li><a href="index.html#turma">Nossa Turma</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contato</h3>
+                    <p>Email: contato@americaquiz.com</p>
+                    <p>Telefone: (11) 99999-9999</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 América Quiz - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementos do DOM
+            const options = document.querySelectorAll('.option');
+            const nextBtn = document.getElementById('next-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            const progressFill = document.querySelector('.progress-fill');
+            const progressText = document.querySelector('.progress-text');
+            const questionNumber = document.querySelector('.question-number');
+            const questionText = document.querySelector('.question-text');
+            const resultsModal = document.getElementById('results-modal');
+            const restartBtn = document.getElementById('restart-btn');
+            
+            // Dados do quiz (em um caso real, viriam de um backend)
+            const quizData = [
+                {
+                    question: "Qual é o maior país da América do Sul em área territorial?",
+                    options: ["Argentina", "Brasil", "Peru", "Colômbia"],
+                    correct: 1
+                },
+                {
+                    question: "Qual é a capital do Chile?",
+                    options: ["Santiago", "Lima", "Buenos Aires", "Montevidéu"],
+                    correct: 0
+                },
+                {
+                    question: "Qual desses países não faz fronteira com o Brasil?",
+                    options: ["Equador", "Venezuela", "Colômbia", "Peru"],
+                    correct: 0
+                },
+                {
+                    question: "Qual é o principal idioma falado na Guiana?",
+                    options: ["Espanhol", "Francês", "Inglês", "Holandês"],
+                    correct: 2
+                },
+                {
+                    question: "Qual é a montanha mais alta da América do Sul?",
+                    options: ["Monte Aconcágua", "Pico da Neblina", "Monte Chimborazo", "Monte Roraima"],
+                    correct: 0
+                }
+            ];
+            
+            // Estado do quiz
+            let currentQuestion = 0;
+            let score = 0;
+            let userAnswers = new Array(quizData.length).fill(null);
+            
+            // Inicializar quiz
+            function initQuiz() {
+                showQuestion(0);
+                updateProgress();
+            }
+            
+            // Mostrar pergunta
+            function showQuestion(index) {
+                const question = quizData[index];
+                questionNumber.textContent = `Pergunta ${index + 1}`;
+                questionText.textContent = question.question;
+                
+                const options = document.querySelectorAll('.option-text');
+                options.forEach((option, i) => {
+                    option.textContent = question.options[i];
+                });
+                
+                // Verificar se o usuário já respondeu esta pergunta
+                if (userAnswers[index] !== null) {
+                    selectOption(userAnswers[index] + 1);
+                } else {
+                    // Desselecionar todas as opções
+                    document.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                }
+                
+                // Atualizar visibilidade dos botões
+                prevBtn.disabled = index === 0;
+                nextBtn.style.display = index < quizData.length - 1 ? 'block' : 'none';
+                submitBtn.style.display = index === quizData.length - 1 ? 'block' : 'none';
+            }
+            
+            // Selecionar opção
+            function selectOption(optionNumber) {
+                // Desselecionar todas as opções
+                document.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Selecionar a opção clicada
+                const selectedOption = document.querySelector(`.option[data-option="${optionNumber}"]`);
+                selectedOption.classList.add('selected');
+                
+                // Salvar resposta do usuário
+                userAnswers[currentQuestion] = optionNumber - 1;
+            }
+            
+            // Atualizar barra de progresso
+            function updateProgress() {
+                const progress = ((currentQuestion + 1) / quizData.length) * 100;
+                progressFill.style.width = `${progress}%`;
+                
+                // Calcular pontuação atual
+                score = 0;
+                userAnswers.forEach((answer, index) => {
+                    if (answer !== null && answer === quizData[index].correct) {
+                        score++;
+                    }
+                });
+                
+                // Atualizar texto de progresso
+                document.querySelectorAll('.progress-text')[0].textContent = `Pergunta ${currentQuestion + 1} de ${quizData.length}`;
+                document.querySelectorAll('.progress-text')[1].textContent = `Pontuação: ${score}`;
+            }
+            
+            // Avançar para a próxima pergunta
+            function nextQuestion() {
+                if (currentQuestion < quizData.length - 1) {
+                    currentQuestion++;
+                    showQuestion(currentQuestion);
+                    updateProgress();
+                }
+            }
+            
+            // Voltar para a pergunta anterior
+            function prevQuestion() {
+                if (currentQuestion > 0) {
+                    currentQuestion--;
+                    showQuestion(currentQuestion);
+                    updateProgress();
+                }
+            }
+            
+            // Finalizar quiz
+            function finishQuiz() {
+                // Calcular pontuação final
+                score = 0;
+                userAnswers.forEach((answer, index) => {
+                    if (answer !== null && answer === quizData[index].correct) {
+                        score++;
+                    }
+                });
+                
+                // Atualizar modal com resultados
+                document.querySelector('.score-display').textContent = `${score}/${quizData.length}`;
+                
+                // Mensagem personalizada baseada na pontuação
+                let message = "";
+                if (score === quizData.length) {
+                    message = "Excelente! Você é um expert em América do Sul!";
+                } else if (score >= quizData.length * 0.7) {
+                    message = "Parabéns! Você demonstrou bons conhecimentos sobre a América do Sul.";
+                } else if (score >= quizData.length * 0.5) {
+                    message = "Bom trabalho! Continue aprendendo sobre a América do Sul.";
+                } else {
+                    message = "Continue estudando! Você pode melhorar no próximo quiz.";
+                }
+                
+                document.querySelector('.score-text').textContent = message;
+                
+                // Mostrar modal
+                resultsModal.style.display = "flex";
+            }
+            
+            // Reiniciar quiz
+            function restartQuiz() {
+                currentQuestion = 0;
+                score = 0;
+                userAnswers = new Array(quizData.length).fill(null);
+                showQuestion(0);
+                updateProgress();
+                resultsModal.style.display = "none";
+            }
+            
+            // Event Listeners
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    selectOption(parseInt(this.getAttribute('data-option')));
+                });
+            });
+            
+            nextBtn.addEventListener('click', nextQuestion);
+            prevBtn.addEventListener('click', prevQuestion);
+            submitBtn.addEventListener('click', finishQuiz);
+            restartBtn.addEventListener('click', restartQuiz);
+            
+            // Inicializar o quiz
+            initQuiz();
+        });
+    </script>
+</body>
+</html>
